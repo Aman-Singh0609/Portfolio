@@ -1,6 +1,7 @@
 /* ==========================================================================
    Aman Singh - Portfolio Master Logic
-   Interactive Particle Canvas, Command Palette, Custom Cursor, Modals
+   Stadium Embers, Goal Confetti, Command Palette, Custom Cursor, Modals
+   Manchester United "Theatre of Dreams" theme
    Updated with Latest Resume Specs (Quarks Intern, IBM Intern, AWS Certs, 8.46 CGPA)
    ========================================================================== */
 
@@ -10,27 +11,30 @@ document.addEventListener('DOMContentLoaded', () => {
     initScrollNav();
     initScrollReveal();
     initCounterAnim();
+    initFanCounters();
     initSkillBars();
     initCommandPalette();
     initProjectsSystem();
     initTerminalWidget();
     initContactForm();
     initMobileNav();
+    initGoalButton();
 });
 
-/* --- 1. Interactive Constellation Canvas --- */
+/* --- 1. Rising Embers / Flares Canvas (stadium-flare feel) --- */
 function initParticleCanvas() {
     const canvas = document.getElementById('particle-canvas');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
-    
+
     let width = canvas.width = window.innerWidth;
     let height = canvas.height = window.innerHeight;
-    
+
     const particles = [];
-    const particleCount = Math.min(Math.floor(width / 18), 70);
-    
-    let mouse = { x: null, y: null, radius: 160 };
+    const particleCount = Math.min(Math.floor(width / 14), 90);
+    const palette = ['255, 59, 46', '218, 41, 28', '251, 225, 34', '255, 138, 61'];
+
+    let mouse = { x: null, y: null, radius: 140 };
 
     window.addEventListener('mousemove', (e) => {
         mouse.x = e.clientX;
@@ -42,76 +46,124 @@ function initParticleCanvas() {
         height = canvas.height = window.innerHeight;
     });
 
-    class Particle {
-        constructor() {
+    class Ember {
+        constructor(initial) {
+            this.reset(initial);
+        }
+
+        reset(initial) {
             this.x = Math.random() * width;
-            this.y = Math.random() * height;
-            this.vx = (Math.random() - 0.5) * 0.8;
-            this.vy = (Math.random() - 0.5) * 0.8;
-            this.radius = Math.random() * 2 + 1;
-            this.color = Math.random() > 0.4 ? 'rgba(0, 245, 212, ' : 'rgba(99, 102, 241, ';
-            this.alpha = Math.random() * 0.5 + 0.2;
+            this.y = initial ? Math.random() * height : height + 10;
+            this.vx = (Math.random() - 0.5) * 0.4;
+            this.vy = -(Math.random() * 0.9 + 0.25);
+            this.radius = Math.random() * 2.2 + 0.6;
+            this.color = palette[Math.floor(Math.random() * palette.length)];
+            this.alpha = Math.random() * 0.6 + 0.2;
+            this.wobble = Math.random() * Math.PI * 2;
         }
 
         update() {
-            this.x += this.vx;
+            this.wobble += 0.02;
+            this.x += this.vx + Math.sin(this.wobble) * 0.3;
             this.y += this.vy;
 
-            if (this.x < 0 || this.x > width) this.vx *= -1;
-            if (this.y < 0 || this.y > height) this.vy *= -1;
-
-            if (mouse.x && mouse.y) {
+            if (mouse.x !== null) {
                 const dx = mouse.x - this.x;
                 const dy = mouse.y - this.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                if (dist < mouse.radius) {
+                if (dist < mouse.radius && dist > 0) {
                     const force = (mouse.radius - dist) / mouse.radius;
-                    this.x -= (dx / dist) * force * 2;
-                    this.y -= (dy / dist) * force * 2;
+                    this.x -= (dx / dist) * force * 2.5;
+                    this.y -= (dy / dist) * force * 2.5;
                 }
             }
+
+            if (this.y < -10 || this.x < -10 || this.x > width + 10) this.reset(false);
         }
 
         draw() {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-            ctx.fillStyle = this.color + this.alpha + ')';
+            ctx.fillStyle = `rgba(${this.color}, ${this.alpha})`;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = `rgba(${this.color}, 0.9)`;
             ctx.fill();
         }
     }
 
     for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
+        particles.push(new Ember(true));
     }
 
     function animate() {
         ctx.clearRect(0, 0, width, height);
-
-        for (let i = 0; i < particles.length; i++) {
-            particles[i].update();
-            particles[i].draw();
-
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist < 130) {
-                    ctx.beginPath();
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    const opacity = (1 - dist / 130) * 0.25;
-                    ctx.strokeStyle = `rgba(0, 245, 212, ${opacity})`;
-                    ctx.lineWidth = 0.8;
-                    ctx.stroke();
-                }
-            }
-        }
-
+        particles.forEach(p => {
+            p.update();
+            p.draw();
+        });
+        ctx.shadowBlur = 0;
         requestAnimationFrame(animate);
     }
 
     animate();
+}
+
+/* --- Goal Celebration Confetti (red / gold / white) --- */
+function launchConfetti() {
+    const canvas = document.getElementById('confetti-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const colors = ['#da291c', '#ff3b2e', '#fbe122', '#ffffff'];
+    const pieces = Array.from({ length: 180 }, () => ({
+        x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+        y: canvas.height * 0.75,
+        vx: (Math.random() - 0.5) * 22,
+        vy: -(Math.random() * 20 + 8),
+        size: Math.random() * 8 + 5,
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.4,
+        color: colors[Math.floor(Math.random() * colors.length)]
+    }));
+
+    let frames = 0;
+    function tick() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        pieces.forEach(p => {
+            p.vy += 0.45;
+            p.vx *= 0.99;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rot += p.vr;
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rot);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+            ctx.restore();
+        });
+        frames++;
+        if (frames < 200) {
+            requestAnimationFrame(tick);
+        } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+    }
+    tick();
+}
+
+/* --- Goal Button --- */
+function initGoalButton() {
+    const goalBtn = document.getElementById('goal-btn');
+    if (!goalBtn) return;
+    goalBtn.addEventListener('click', celebrateGoal);
+}
+
+function celebrateGoal() {
+    launchConfetti();
+    showToast('GOAAAL! Glory Glory Man United!', 'fa-futbol');
 }
 
 /* --- 2. Custom Spring-Physics Cursor --- */
@@ -139,15 +191,19 @@ function initCustomCursor() {
     }
     animateFollower();
 
-    document.querySelectorAll('a, button, input, textarea, .project-card, .bento-card, .filter-btn, .tag, .command-item, .contact-method').forEach(el => {
-        el.addEventListener('mouseenter', () => {
+    // Delegated so dynamically rendered cards (projects) get the hover state too
+    const hoverSelector = 'a, button, input, textarea, .project-card, .bento-card, .filter-btn, .tag, .command-item, .contact-method';
+    document.addEventListener('mouseover', (e) => {
+        if (e.target.closest(hoverSelector)) {
             cursor.classList.add('hover');
             follower.style.transform = 'translate(-50%, -50%) scale(1.4)';
-        });
-        el.addEventListener('mouseleave', () => {
+        }
+    });
+    document.addEventListener('mouseout', (e) => {
+        if (e.target.closest(hoverSelector)) {
             cursor.classList.remove('hover');
             follower.style.transform = 'translate(-50%, -50%) scale(1)';
-        });
+        }
     });
 }
 
@@ -156,8 +212,14 @@ function initScrollNav() {
     const nav = document.querySelector('nav');
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-links a');
+    const progressBar = document.querySelector('#scroll-progress span');
 
     window.addEventListener('scroll', () => {
+        if (progressBar) {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            progressBar.style.width = (max > 0 ? (window.scrollY / max) * 100 : 0) + '%';
+        }
+
         if (window.scrollY > 40) {
             nav.classList.add('scrolled');
         } else {
@@ -234,6 +296,35 @@ function initCounterAnim() {
 
     const metricsSection = document.querySelector('.hero-metrics');
     if (metricsSection) observer.observe(metricsSection);
+}
+
+/* --- Fan Zone Counters (Red Side) --- */
+function initFanCounters() {
+    const counters = document.querySelectorAll('.fan-counter');
+    const grid = document.querySelector('.fan-grid');
+    if (!grid || !counters.length) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        if (!entries[0].isIntersecting) return;
+        observer.disconnect();
+
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'), 10);
+            const duration = 2000;
+            const startTime = performance.now();
+
+            function step(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 4);
+                counter.innerText = Math.floor(eased * target);
+                if (progress < 1) requestAnimationFrame(step);
+                else counter.innerText = target;
+            }
+            requestAnimationFrame(step);
+        });
+    }, { threshold: 0.4 });
+
+    observer.observe(grid);
 }
 
 /* --- 6. Skill Progress Bars Animation --- */
@@ -357,6 +448,8 @@ function initCommandPalette() {
         if (action === 'navigate' && target) {
             const element = document.querySelector(target);
             if (element) element.scrollIntoView({ behavior: 'smooth' });
+        } else if (action === 'goal') {
+            celebrateGoal();
         } else if (action === 'copy-email') {
             copyToClipboard('amansingh06092004@gmail.com', 'Email copied to clipboard!');
         } else if (action === 'copy-phone') {
@@ -453,6 +546,9 @@ function initProjectsSystem() {
 
     renderProjects('all');
 
+    const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+    if (allBtn) allBtn.textContent = `All Projects (${projectsData.length})`;
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
@@ -466,12 +562,13 @@ function initProjectsSystem() {
         projectsGrid.innerHTML = '';
         const filtered = category === 'all' ? projectsData : projectsData.filter(p => p.category === category);
 
-        filtered.forEach(project => {
+        filtered.forEach((project, index) => {
             const card = document.createElement('div');
             card.className = 'project-card reveal active';
             card.setAttribute('data-id', project.id);
 
             card.innerHTML = `
+                <span class="shirt-no">${index + 1}</span>
                 <div class="project-thumb">
                     <img src="${project.image}" alt="${project.title}" loading="lazy">
                     <div class="project-overlay">
@@ -536,7 +633,7 @@ function initTerminalWidget() {
             const command = terminalInput.value.trim().toLowerCase();
             terminalInput.value = '';
 
-            appendTerminalLine(`<span class="prompt-user">aman@cloud-node</span>:<span class="prompt-path">~</span>$ ${command}`);
+            appendTerminalLine(`<span class="prompt-user">aman@old-trafford</span>:<span class="prompt-path">~</span>$ ${escapeHtml(command)}`);
 
             handleTerminalCommand(command);
             terminalBody.scrollTop = terminalBody.scrollHeight;
@@ -553,7 +650,17 @@ function initTerminalWidget() {
     function handleTerminalCommand(cmd) {
         switch (cmd) {
             case 'help':
-                appendTerminalLine('Available commands: <span style="color: var(--primary);">whoami, intern, education, skills, certs, projects, contact, clear, uptime</span>');
+                appendTerminalLine('Available commands: <span style="color: var(--gold);">whoami, intern, education, skills, certs, projects, contact, uptime, glory, treble, siuu, clear</span>');
+                break;
+            case 'glory':
+                appendTerminalLine('Glory, glory, Man United! Once a Red, always a Red. 🔴');
+                break;
+            case 'treble':
+                appendTerminalLine('1999. Premier League + FA Cup + Champions League. Football, bloody hell!');
+                break;
+            case 'siuu':
+                appendTerminalLine('SIUUUUUU! ⚽');
+                celebrateGoal();
                 break;
             case 'whoami':
                 appendTerminalLine('Aman Singh | BTech CSE - CCVT @ UPES Dehradun (2022-2026, CGPA: 8.46) | Software Developer Intern @ Quarks.');
@@ -586,7 +693,7 @@ function initTerminalWidget() {
             case '':
                 break;
             default:
-                appendTerminalLine(`zsh: command not found: ${cmd}. Type <span style="color: var(--primary);">help</span> for available commands.`);
+                appendTerminalLine(`zsh: command not found: ${escapeHtml(cmd)}. Type <span style="color: var(--gold);">help</span> for available commands.`);
                 break;
         }
     }
@@ -612,7 +719,8 @@ function initContactForm() {
     if (contactForm) {
         contactForm.addEventListener('submit', (e) => {
             e.preventDefault();
-            showToast('Message dispatched! Aman will get back to you shortly.');
+            showToast('GOAAAL! Offer received. Aman will get back to you shortly.', 'fa-futbol');
+            launchConfetti();
             contactForm.reset();
         });
     }
@@ -626,7 +734,11 @@ function copyToClipboard(text, successMessage) {
     });
 }
 
-function showToast(message) {
+function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function showToast(message, icon = 'fa-check-circle') {
     let container = document.getElementById('toast-container');
     if (!container) {
         container = document.createElement('div');
@@ -636,14 +748,14 @@ function showToast(message) {
 
     const toast = document.createElement('div');
     toast.className = 'toast';
-    toast.innerHTML = `<i class="fas fa-check-circle" style="color: var(--primary);"></i> ${message}`;
+    toast.innerHTML = `<i class="fas ${icon}" style="color: var(--gold);"></i> ${message}`;
     container.appendChild(toast);
 
     setTimeout(() => {
         toast.style.opacity = '0';
         toast.style.transform = 'translateY(10px)';
         setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    }, 3200);
 }
 
 /* --- 11. Mobile Navigation Drawer --- */

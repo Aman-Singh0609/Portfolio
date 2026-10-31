@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aman Singh | Software Developer & Cloud Engineer</title>
-    <meta name="description" content="Portfolio of Aman Singh - BTech CSE (CCVT) Student @ UPES Dehradun, Software Developer Intern @ Quarks, former IBM Cloud Intern. Specializing in AWS, Docker, Kubernetes, Node.js, Java, and Distributed Systems.">
+    <meta name="description" content="Portfolio of Aman Singh - BTech CSE (CCVT) Student @ UPES Dehradun, Software Developer Intern @ Quarks, former IBM Cloud Intern. Specializing in AWS, Docker, Kubernetes, Node.js, Java, and Distributed Systems. Man United through and through.">
     <meta name="keywords" content="Aman Singh, Software Developer, Cloud Engineer, DevOps Intern, Quarks, IBM Intern, UPES Dehradun, AWS, Docker, Kubernetes, Java, Node.js">
     <meta name="author" content="Aman Singh">
-    
+    <meta name="theme-color" content="#DA291C">
+
     <!-- OpenGraph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Aman Singh | Software Developer & Cloud Engineer">
@@ -16,21 +17,42 @@
 
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
     <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <!-- Tunnel Preloader -->
+    <div id="preloader">
+        <div class="preloader-inner">
+            <i class="fas fa-futbol preloader-ball"></i>
+            <div class="preloader-kicker">Welcome to the</div>
+            <div class="preloader-title">Theatre of <span>Dreams</span></div>
+            <div class="preloader-bar"><span></span></div>
+        </div>
+    </div>
+
+    <!-- Scroll Progress (touchline) -->
+    <div id="scroll-progress"><span></span></div>
+
     <!-- Grain Filter Overlay -->
     <div class="grain-overlay"></div>
 
-    <!-- Interactive Particle Constellation Canvas -->
+    <!-- Pitch markings + stadium light background -->
+    <div class="pitch-bg"></div>
+
+    <!-- Embers / Flares Canvas -->
     <canvas id="particle-canvas"></canvas>
+
+    <!-- Confetti Canvas (goal celebrations) -->
+    <canvas id="confetti-canvas"></canvas>
 
     <!-- Custom Cursor Follower -->
     <div id="custom-cursor"></div>
-    <div id="custom-cursor-follower"></div>
+    <div id="custom-cursor-follower"><i class="fas fa-futbol"></i></div>
 
     <!-- Notification Toast Container -->
     <div id="toast-container"></div>
@@ -40,7 +62,7 @@
         <div class="container nav-container">
             <a href="#home" class="logo">
                 <div class="logo-badge">
-                    <i class="fas fa-terminal"></i>
+                    <i class="fas fa-futbol"></i>
                 </div>
                 Aman<span>Singh</span>
             </a>
@@ -52,12 +74,13 @@
 
             <div class="nav-links">
                 <a href="#home" class="active">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#certs">Certifications</a>
-                <a href="#experience">Experience</a>
-                <a href="#projects">Work</a>
-                <a href="#contact">Contact</a>
+                <a href="#about">Profile</a>
+                <a href="#redside">Red Side</a>
+                <a href="#skills">Tactics</a>
+                <a href="#certs">Trophies</a>
+                <a href="#experience">Transfers</a>
+                <a href="#projects">Starting XI</a>
+                <a href="#contact">Sign Me</a>
             </div>
 
             <div class="nav-actions">
@@ -80,19 +103,20 @@
         <div>
             <div class="logo">
                 <div class="logo-badge">
-                    <i class="fas fa-terminal"></i>
+                    <i class="fas fa-futbol"></i>
                 </div>
                 Aman<span>Singh</span>
             </div>
 
             <div class="mobile-nav-links">
                 <a href="#home">Home</a>
-                <a href="#about">About</a>
-                <a href="#skills">Skills</a>
-                <a href="#certs">Certifications</a>
-                <a href="#experience">Experience</a>
-                <a href="#projects">Selected Work</a>
-                <a href="#contact">Contact</a>
+                <a href="#about">Player Profile</a>
+                <a href="#redside">The Red Side</a>
+                <a href="#skills">Tactical Board</a>
+                <a href="#certs">Trophy Cabinet</a>
+                <a href="#experience">Transfer History</a>
+                <a href="#projects">Starting XI</a>
+                <a href="#contact">Sign Me</a>
             </div>
         </div>
 
@@ -107,23 +131,24 @@
     <section id="home" class="hero">
         <div class="hero-glow-1"></div>
         <div class="hero-glow-2"></div>
-        
+        <div class="hero-watermark" aria-hidden="true">GLORY<br>GLORY</div>
+
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
                     <div class="hero-badge">
-                        <i class="fas fa-code"></i> SOFTWARE DEVELOPER & CLOUD ARCHITECT
+                        <i class="fas fa-futbol"></i> MATCHDAY &bull; SOFTWARE DEVELOPER & CLOUD ARCHITECT
                     </div>
-                    
+
                     <h1 class="hero-title">
                         Building Resilient <span class="gradient-text">Backend Systems</span> & Cloud Infrastructure.
                     </h1>
 
                     <p class="hero-subtitle">
-                        BTech CSE (CCVT) student at UPES Dehradun (July 2022 – June 2026). Currently Software Developer Intern at Quarks & former IBM Cloud Project Intern. Specializing in AWS Architecture, Docker, Kubernetes, Node.js, and Java backend microservices.
+                        BTech CSE (CCVT) student at UPES Dehradun (July 2022 – June 2026). Currently Software Developer Intern at Quarks & former IBM Cloud Project Intern. Specializing in AWS Architecture, Docker, Kubernetes, Node.js, and Java backend microservices. Off the clock? Red Devil for life.
                     </p>
 
-                    <!-- Key Metrics Counter -->
+                    <!-- Scoreboard Metrics -->
                     <div class="hero-metrics">
                         <div class="metric-item">
                             <span class="metric-value"><span class="counter" data-target="8.46">0</span></span>
@@ -135,17 +160,17 @@
                         </div>
                         <div class="metric-item">
                             <span class="metric-value"><span class="counter" data-target="4">0</span></span>
-                            <span class="metric-label">Cloud Certifications</span>
+                            <span class="metric-label">Certifications</span>
                         </div>
                     </div>
 
                     <!-- Hero Call-to-Actions -->
                     <div class="hero-actions">
                         <a href="#projects" class="btn btn-primary">
-                            Explore Selected Work <i class="fas fa-arrow-right"></i>
+                            See The Starting XI <i class="fas fa-arrow-right"></i>
                         </a>
                         <a href="#contact" class="btn btn-secondary">
-                            Initiate Contact <i class="fas fa-paper-plane"></i>
+                            Make An Offer <i class="fas fa-paper-plane"></i>
                         </a>
                         <a href="https://github.com/Aman-Singh0609" target="_blank" class="btn-icon" title="GitHub Profile">
                             <i class="fab fa-github"></i>
@@ -159,12 +184,30 @@
                     </div>
                 </div>
 
-                <!-- Interactive Profile Card with Floating Tech Badges -->
+                <!-- Player Card -->
                 <div class="hero-visual">
                     <div class="profile-card-wrap">
                         <div class="profile-card-bg"></div>
-                        <div class="profile-card">
-                            <img src="Images/Profile.jpeg" alt="Aman Singh Profile">
+                        <div class="player-card">
+                            <div class="player-rating">
+                                <span class="rating-num">88</span>
+                                <span class="rating-pos">SWE</span>
+                                <i class="fas fa-futbol rating-icon"></i>
+                            </div>
+                            <div class="player-photo">
+                                <img src="Images/Profile.jpeg" alt="Aman Singh Profile">
+                            </div>
+                            <div class="player-info">
+                                <div class="player-name">Aman Singh</div>
+                                <div class="player-stats">
+                                    <div><b>90</b><span>CLD</span></div>
+                                    <div><b>88</b><span>BCK</span></div>
+                                    <div><b>90</b><span>JAV</span></div>
+                                    <div><b>86</b><span>DBS</span></div>
+                                    <div><b>88</b><span>ALG</span></div>
+                                    <div><b>92</b><span>GIT</span></div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="floating-pill pill-1">
@@ -182,11 +225,29 @@
         </div>
     </section>
 
+    <!-- Ticker -->
+    <div class="ticker" aria-hidden="true">
+        <div class="ticker-track">
+            <span><i class="fas fa-futbol"></i> GLORY GLORY MAN UNITED</span>
+            <span><i class="fas fa-futbol"></i> THEATRE OF DREAMS</span>
+            <span><i class="fas fa-futbol"></i> 20 LEAGUE TITLES</span>
+            <span><i class="fas fa-futbol"></i> 3 EUROPEAN CUPS</span>
+            <span><i class="fas fa-futbol"></i> THE 1999 TREBLE</span>
+            <span><i class="fas fa-futbol"></i> ONCE A RED, ALWAYS A RED</span>
+            <span><i class="fas fa-futbol"></i> GLORY GLORY MAN UNITED</span>
+            <span><i class="fas fa-futbol"></i> THEATRE OF DREAMS</span>
+            <span><i class="fas fa-futbol"></i> 20 LEAGUE TITLES</span>
+            <span><i class="fas fa-futbol"></i> 3 EUROPEAN CUPS</span>
+            <span><i class="fas fa-futbol"></i> THE 1999 TREBLE</span>
+            <span><i class="fas fa-futbol"></i> ONCE A RED, ALWAYS A RED</span>
+        </div>
+    </div>
+
     <!-- About Section & Bento Grid -->
     <section id="about" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">01 // ABOUT ME</span>
+                <span class="section-tag">01 // PLAYER PROFILE</span>
                 <h2 class="section-title">Backend Precision Meets Cloud Engineering.</h2>
                 <p class="section-subtitle">Leveraging Cloud Computing & Virtualization Technology with real-world industry experience.</p>
             </div>
@@ -210,21 +271,21 @@
                 <div class="bento-card bento-terminal reveal">
                     <div class="bento-card-header">
                         <div class="bento-icon"><i class="fas fa-terminal"></i></div>
-                        <h3>Interactive Terminal</h3>
+                        <h3>Dressing Room Terminal</h3>
                     </div>
-                    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 8px;">Type <code style="color: var(--primary);">help</code> to explore system CLI commands:</p>
+                    <p style="font-size: 0.88rem; color: var(--text-dim); margin-bottom: 8px;">Type <code style="color: var(--gold);">help</code> to see the team sheet:</p>
                     <div class="terminal-window">
                         <div class="terminal-header">
                             <span class="terminal-dot dot-red"></span>
                             <span class="terminal-dot dot-yellow"></span>
                             <span class="terminal-dot dot-green"></span>
-                            <span class="terminal-title">zsh - aman@cloud-node:~</span>
+                            <span class="terminal-title">zsh - aman@old-trafford:~</span>
                         </div>
                         <div class="terminal-body" id="terminal-body">
-                            <div class="terminal-line">Welcome to Aman's Terminal Node v2.7.0</div>
+                            <div class="terminal-line">Welcome to Aman's Terminal Node v2.7.0 &mdash; Theatre of Dreams edition</div>
                             <div class="terminal-line">Type <span class="prompt-user">help</span> for available commands.</div>
                             <div class="terminal-input-row">
-                                <span class="prompt-user">aman@cloud-node</span>:<span class="prompt-path">~</span>$&nbsp;
+                                <span class="prompt-user">aman@old-trafford</span>:<span class="prompt-path">~</span>$&nbsp;
                                 <input type="text" id="terminal-input" class="terminal-input" placeholder="type a command..." autocomplete="off">
                             </div>
                         </div>
@@ -235,13 +296,13 @@
                 <div class="bento-card bento-edu reveal">
                     <div class="bento-card-header">
                         <div class="bento-icon"><i class="fas fa-graduation-cap"></i></div>
-                        <h3>Education & Academic Standing</h3>
+                        <h3>Academy Record</h3>
                     </div>
                     <div style="margin-bottom: 16px;">
                         <h4 style="font-size: 1.1rem; color: var(--text-main); font-weight: 700;">University of Petroleum and Energy Studies (UPES)</h4>
-                        <p style="color: var(--primary); font-size: 0.92rem; font-family: var(--font-code);">Dehradun, Uttarakhand (July 2022 – June 2026)</p>
+                        <p style="color: var(--gold); font-size: 0.92rem; font-family: var(--font-code);">Dehradun, Uttarakhand (July 2022 – June 2026)</p>
                         <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 6px;">Bachelor of Technology in CSE - CCVT</p>
-                        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 4px;">Cumulative GPA: <strong style="color: var(--primary);">8.46 / 10</strong></p>
+                        <p style="color: var(--text-dim); font-size: 0.9rem; margin-top: 4px;">Cumulative GPA: <strong style="color: var(--gold);">8.46 / 10</strong></p>
                     </div>
                 </div>
 
@@ -249,7 +310,7 @@
                 <div class="bento-card bento-stack reveal">
                     <div class="bento-card-header">
                         <div class="bento-icon"><i class="fas fa-layer-group"></i></div>
-                        <h3>Technical Skills Radar</h3>
+                        <h3>The Squad (Tech Stack)</h3>
                     </div>
                     <div class="tags-wrapper">
                         <span class="tag"><i class="fab fa-java"></i> Java (Core & OOP)</span>
@@ -268,11 +329,51 @@
         </div>
     </section>
 
+    <!-- The Red Side (Fan Zone) -->
+    <section id="redside" class="section redside">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">02 // THE RED SIDE</span>
+                <h2 class="section-title">Off The Keyboard, I Bleed Red.</h2>
+                <p class="section-subtitle">Manchester United fan. Same discipline, same belief: keep pushing until the 90th minute and beyond.</p>
+            </div>
+
+            <div class="fan-grid">
+                <div class="fan-stat reveal">
+                    <div class="fan-num"><span class="fan-counter" data-target="20">0</span></div>
+                    <div class="fan-label">League Titles</div>
+                </div>
+                <div class="fan-stat reveal">
+                    <div class="fan-num"><span class="fan-counter" data-target="3">0</span></div>
+                    <div class="fan-label">European Cups</div>
+                </div>
+                <div class="fan-stat reveal">
+                    <div class="fan-num"><span class="fan-counter" data-target="1999">0</span></div>
+                    <div class="fan-label">The Treble Year</div>
+                </div>
+                <div class="fan-stat reveal">
+                    <div class="fan-num"><span class="fan-counter" data-target="74">0</span>K</div>
+                    <div class="fan-label">Old Trafford Roar</div>
+                </div>
+            </div>
+
+            <div class="fan-banner reveal">
+                <div class="fan-banner-text">
+                    <h3>Never Stop Believing.</h3>
+                    <p>Late winners, comebacks and the never-say-die spirit shaped how I debug, ship and show up. Hit the button when something good lands.</p>
+                </div>
+                <button class="btn btn-gold" id="goal-btn">
+                    <i class="fas fa-futbol"></i> GOAAAL!
+                </button>
+            </div>
+        </div>
+    </section>
+
     <!-- Skills Matrix Section -->
     <section id="skills" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">02 // SKILL MATRIX</span>
+                <span class="section-tag">03 // TACTICAL BOARD</span>
                 <h2 class="section-title">Technical Domain Breakdown.</h2>
                 <p class="section-subtitle">Categorized technical expertise verified through industry internships and projects.</p>
             </div>
@@ -406,45 +507,41 @@
     </section>
 
     <!-- Technical Certifications Section -->
-    <section id="certs" class="section" style="background: rgba(7, 13, 30, 0.4);">
+    <section id="certs" class="section section-dark">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">03 // CERTIFICATIONS</span>
+                <span class="section-tag">04 // TROPHY CABINET</span>
                 <h2 class="section-title">Industry Credentials & Certifications.</h2>
                 <p class="section-subtitle">Verified certifications in AWS Cloud Architecture, Security, and Web Design.</p>
             </div>
 
-            <div class="skills-grid" style="grid-template-columns: repeat(4, 1fr);">
-                <div class="bento-card reveal" style="padding: 28px;">
-                    <div class="bento-icon" style="background: rgba(255, 153, 0, 0.15); border-color: rgba(255, 153, 0, 0.3); color: #ff9900;">
-                        <i class="fab fa-aws"></i>
-                    </div>
-                    <h3 style="font-size: 1.1rem; margin: 16px 0 8px 0;">AWS Academy Cloud Security Foundations</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim);">AWS Academy</p>
+            <div class="skills-grid">
+                <div class="bento-card trophy-card reveal">
+                    <div class="bento-icon trophy-icon aws"><i class="fab fa-aws"></i></div>
+                    <h3>AWS Academy Cloud Security Foundations</h3>
+                    <p>AWS Academy</p>
+                    <i class="fas fa-trophy trophy-watermark"></i>
                 </div>
 
-                <div class="bento-card reveal" style="padding: 28px;">
-                    <div class="bento-icon" style="background: rgba(255, 153, 0, 0.15); border-color: rgba(255, 153, 0, 0.3); color: #ff9900;">
-                        <i class="fab fa-aws"></i>
-                    </div>
-                    <h3 style="font-size: 1.1rem; margin: 16px 0 8px 0;">AWS Cloud Quest: Cloud Practitioner</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim);">Amazon Web Services</p>
+                <div class="bento-card trophy-card reveal">
+                    <div class="bento-icon trophy-icon aws"><i class="fab fa-aws"></i></div>
+                    <h3>AWS Cloud Quest: Cloud Practitioner</h3>
+                    <p>Amazon Web Services</p>
+                    <i class="fas fa-trophy trophy-watermark"></i>
                 </div>
 
-                <div class="bento-card reveal" style="padding: 28px;">
-                    <div class="bento-icon" style="background: rgba(255, 153, 0, 0.15); border-color: rgba(255, 153, 0, 0.3); color: #ff9900;">
-                        <i class="fab fa-aws"></i>
-                    </div>
-                    <h3 style="font-size: 1.1rem; margin: 16px 0 8px 0;">AWS Cloud Practitioner Essentials</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim);">Amazon Web Services</p>
+                <div class="bento-card trophy-card reveal">
+                    <div class="bento-icon trophy-icon aws"><i class="fab fa-aws"></i></div>
+                    <h3>AWS Cloud Practitioner Essentials</h3>
+                    <p>Amazon Web Services</p>
+                    <i class="fas fa-trophy trophy-watermark"></i>
                 </div>
 
-                <div class="bento-card reveal" style="padding: 28px;">
-                    <div class="bento-icon" style="background: rgba(0, 245, 212, 0.15); border-color: rgba(0, 245, 212, 0.3); color: var(--primary);">
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <h3 style="font-size: 1.1rem; margin: 16px 0 8px 0;">Responsive Web Design</h3>
-                    <p style="font-size: 0.85rem; color: var(--text-dim);">freeCodeCamp</p>
+                <div class="bento-card trophy-card reveal">
+                    <div class="bento-icon trophy-icon"><i class="fas fa-laptop-code"></i></div>
+                    <h3>Responsive Web Design</h3>
+                    <p>freeCodeCamp</p>
+                    <i class="fas fa-trophy trophy-watermark"></i>
                 </div>
             </div>
         </div>
@@ -454,7 +551,7 @@
     <section id="experience" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">04 // CAREER JOURNEY</span>
+                <span class="section-tag">05 // TRANSFER HISTORY</span>
                 <h2 class="section-title">Professional Internships & Track Record.</h2>
                 <p class="section-subtitle">Industry software development internships, cloud achievements, and academic growth.</p>
             </div>
@@ -462,7 +559,7 @@
             <div class="timeline">
                 <!-- Timeline Item 1: Quarks Internship -->
                 <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
+                    <div class="timeline-dot"><i class="fas fa-futbol"></i></div>
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <div>
@@ -484,7 +581,7 @@
 
                 <!-- Timeline Item 2: IBM Internship -->
                 <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
+                    <div class="timeline-dot"><i class="fas fa-futbol"></i></div>
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <div>
@@ -506,7 +603,7 @@
 
                 <!-- Timeline Item 3: UPES Dehradun -->
                 <div class="timeline-item reveal">
-                    <div class="timeline-dot"></div>
+                    <div class="timeline-dot"><i class="fas fa-futbol"></i></div>
                     <div class="timeline-content">
                         <div class="timeline-header">
                             <div>
@@ -532,14 +629,14 @@
     <section id="projects" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">05 // SELECTED WORK</span>
+                <span class="section-tag">06 // STARTING XI</span>
                 <h2 class="section-title">Featured Systems & Repositories.</h2>
                 <p class="section-subtitle">Production cloud-native applications, containerized deployments, and backend services.</p>
             </div>
 
             <!-- Project Category Filters -->
             <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All Projects (${projectsData.length})</button>
+                <button class="filter-btn active" data-filter="all">All Projects</button>
                 <button class="filter-btn" data-filter="cloud-devops">Cloud & DevOps</button>
                 <button class="filter-btn" data-filter="systems-cli">Systems & CLI</button>
                 <button class="filter-btn" data-filter="security-algo">Security & Algorithms</button>
@@ -554,7 +651,7 @@
     <section id="contact" class="section">
         <div class="container">
             <div class="section-header">
-                <span class="section-tag">06 // INITIATE CONTACT</span>
+                <span class="section-tag">07 // CONTRACT TALKS</span>
                 <h2 class="section-title">Let's Connect & Build Together.</h2>
                 <p class="section-subtitle">Open for software engineering roles, cloud architecture discussions, and technical opportunities.</p>
             </div>
@@ -562,7 +659,7 @@
             <div class="contact-grid">
                 <!-- Contact Info Card -->
                 <div class="contact-info-card reveal">
-                    <h3 style="font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: 24px; color: var(--text-main);">
+                    <h3 style="font-family: var(--font-heading); font-size: 2rem; letter-spacing: 1px; margin-bottom: 24px; color: var(--text-main);">
                         Direct Reach Out
                     </h3>
 
@@ -619,7 +716,7 @@
                             <textarea id="form-message" class="form-input" placeholder="Hi Aman, we would love to discuss a Software Developer opportunity..." required></textarea>
                         </div>
                         <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            Dispatch Message <i class="fas fa-paper-plane"></i>
+                            Send The Offer <i class="fas fa-paper-plane"></i>
                         </button>
                     </form>
                 </div>
@@ -631,7 +728,8 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-brand">
-                Aman<span style="color: var(--primary);">Singh</span> &copy; 2026. All Rights Reserved.
+                Aman<span style="color: var(--red-bright);">Singh</span> &copy; 2026. All Rights Reserved.
+                <div class="footer-chant">Glory Glory Man United <i class="fas fa-futbol"></i></div>
             </div>
             <div style="display: flex; gap: 16px; align-items: center;">
                 <a href="https://github.com/Aman-Singh0609" target="_blank" class="btn-icon"><i class="fab fa-github"></i></a>
@@ -657,23 +755,27 @@
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#about">
-                    <div class="command-item-info"><i class="fas fa-user"></i> Jump to About & Terminal</div>
+                    <div class="command-item-info"><i class="fas fa-user"></i> Jump to Profile & Terminal</div>
+                    <span class="command-badge">Section</span>
+                </div>
+                <div class="command-item" data-action="navigate" data-target="#redside">
+                    <div class="command-item-info"><i class="fas fa-futbol"></i> Jump to The Red Side</div>
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#skills">
-                    <div class="command-item-info"><i class="fas fa-microchip"></i> Jump to Skills Matrix</div>
+                    <div class="command-item-info"><i class="fas fa-microchip"></i> Jump to Tactical Board (Skills)</div>
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#certs">
-                    <div class="command-item-info"><i class="fas fa-certificate"></i> Jump to Certifications</div>
+                    <div class="command-item-info"><i class="fas fa-trophy"></i> Jump to Trophy Cabinet</div>
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#experience">
-                    <div class="command-item-info"><i class="fas fa-briefcase"></i> Jump to Experience (Quarks & IBM)</div>
+                    <div class="command-item-info"><i class="fas fa-briefcase"></i> Jump to Transfers (Quarks & IBM)</div>
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#projects">
-                    <div class="command-item-info"><i class="fas fa-folder-open"></i> Jump to Selected Work</div>
+                    <div class="command-item-info"><i class="fas fa-folder-open"></i> Jump to Starting XI (Projects)</div>
                     <span class="command-badge">Section</span>
                 </div>
                 <div class="command-item" data-action="navigate" data-target="#contact">
@@ -682,6 +784,10 @@
                 </div>
 
                 <div class="command-group-title">Quick Actions</div>
+                <div class="command-item" data-action="goal">
+                    <div class="command-item-info"><i class="fas fa-futbol"></i> Celebrate a Goal</div>
+                    <span class="command-badge">Fun</span>
+                </div>
                 <div class="command-item" data-action="copy-email">
                     <div class="command-item-info"><i class="fas fa-envelope"></i> Copy Email Address</div>
                     <span class="command-badge">Action</span>
@@ -715,7 +821,7 @@
             </div>
             <div class="project-modal-content">
                 <span class="project-category" id="modal-project-category">Category</span>
-                <h2 style="font-family: var(--font-heading); font-size: 1.8rem; margin: 8px 0 16px 0;" id="modal-project-title">Title</h2>
+                <h2 style="font-family: var(--font-heading); font-size: 2.4rem; letter-spacing: 1px; font-weight: 400; margin: 8px 0 16px 0;" id="modal-project-title">Title</h2>
                 <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 24px;" id="modal-project-desc">Description</p>
 
                 <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Architecture Tech Stack:</h4>
