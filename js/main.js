@@ -326,7 +326,8 @@ function initCounterAnim() {
 
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !animated) {
+            // Wait for the hero entrance so the numbers count while they are visible
+            if (entry.isIntersecting && !animated && document.documentElement.classList.contains('hero-ready')) {
                 animated = true;
                 counters.forEach(counter => {
                     const target = parseFloat(counter.getAttribute('data-target'));
@@ -356,7 +357,14 @@ function initCounterAnim() {
     }, { threshold: 0.5 });
 
     const metricsSection = document.querySelector('.hero-metrics');
-    if (metricsSection) observer.observe(metricsSection);
+    if (metricsSection) {
+        observer.observe(metricsSection);
+        // Re-observe once the hero is revealed so the observer fires again
+        document.addEventListener('hero-ready', () => {
+            observer.unobserve(metricsSection);
+            observer.observe(metricsSection);
+        }, { once: true });
+    }
 }
 
 /* --- Fan Zone Counters (Red Side) --- */

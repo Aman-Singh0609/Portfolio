@@ -9,7 +9,20 @@
     <meta name="author" content="Aman Singh">
     <meta name="theme-color" content="#DA291C">
     <meta name="color-scheme" content="dark light">
-    <script>try { if (localStorage.getItem('kit') === 'away') document.documentElement.setAttribute('data-kit', 'away'); } catch (e) {}</script>
+    <script>
+        (function () {
+            var root = document.documentElement;
+            root.classList.add('js');
+            try { if (localStorage.getItem('kit') === 'away') root.setAttribute('data-kit', 'away'); } catch (e) {}
+            // Failsafe: never leave the hero hidden if the main scripts fail to run
+            setTimeout(function () {
+                if (!root.classList.contains('hero-ready')) {
+                    root.classList.add('hero-ready');
+                    document.dispatchEvent(new Event('hero-ready'));
+                }
+            }, 6000);
+        })();
+    </script>
     <link rel="canonical" href="https://aman-singh0609.github.io/Portfolio/">
 
     <!-- Icons & Manifest -->
@@ -192,32 +205,63 @@
 <main id="main">
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-glow-1"></div>
-        <div class="hero-glow-2"></div>
+        <!-- Cinematic background layers -->
+        <div class="hero-beams" aria-hidden="true">
+            <i style="--r:-24deg; --l:10%; --t:7s"></i>
+            <i style="--r:0deg; --l:46%; --t:9s"></i>
+            <i style="--r:24deg; --l:82%; --t:8s"></i>
+        </div>
+        <div class="hero-spotlight" aria-hidden="true"></div>
+        <svg class="hero-pitch" viewBox="0 0 1000 640" preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-depth="12">
+            <g fill="none" stroke="currentColor" stroke-width="1.6">
+                <path pathLength="1" d="M500 0V640"/>
+                <circle pathLength="1" cx="500" cy="320" r="130"/>
+                <path pathLength="1" d="M0 170H150V470H0"/>
+                <path pathLength="1" d="M1000 170H850V470H1000"/>
+                <path pathLength="1" d="M0 250H55V390H0"/>
+                <path pathLength="1" d="M1000 250H945V390H1000"/>
+            </g>
+        </svg>
+        <div class="hero-glow-1" data-depth="30"></div>
+        <div class="hero-glow-2" data-depth="-26"></div>
         <div class="hero-watermark" aria-hidden="true">GLORY<br>GLORY</div>
+
+        <!-- Social rail (wide screens) -->
+        <div class="hero-rail" aria-label="Social links">
+            <span class="rail-line"></span>
+            <a href="https://github.com/Aman-Singh0609" target="_blank" rel="noopener" aria-label="GitHub profile"><i class="fab fa-github"></i></a>
+            <a href="https://www.linkedin.com/in/aman-singh-b30a72284" target="_blank" rel="noopener" aria-label="LinkedIn profile"><i class="fab fa-linkedin-in"></i></a>
+            <a href="https://leetcode.com/u/AmiAllen/" target="_blank" rel="noopener" aria-label="LeetCode profile"><i class="fas fa-code"></i></a>
+            <span class="rail-text">Follow</span>
+        </div>
 
         <div class="container">
             <div class="hero-grid">
                 <div class="hero-content">
-                    <div class="hero-badge">
-                        <i class="fas fa-futbol"></i> MATCHDAY &bull; SOFTWARE DEVELOPER & CLOUD ARCHITECT
+                    <div class="hero-top" data-in style="--d:100ms">
+                        <div class="hero-badge">
+                            <i class="fas fa-futbol"></i> MATCHDAY &bull; SOFTWARE DEVELOPER & CLOUD ARCHITECT
+                        </div>
+                        <span class="avail"><span class="avail-dot"></span> Open to opportunities</span>
                     </div>
 
-                    <h1 class="hero-title">
-                        Building Resilient <span class="gradient-text">Backend Systems</span> & Cloud Infrastructure.
+                    <h1 class="hero-title" aria-label="Building Resilient Backend Systems & Cloud Infrastructure.">
+                        <span class="line" aria-hidden="true"><span>Building Resilient</span></span>
+                        <span class="line" aria-hidden="true"><span class="gradient-text">Backend Systems</span></span>
+                        <span class="line" aria-hidden="true"><span>&amp; Cloud Infrastructure.</span></span>
                     </h1>
 
-                    <p class="hero-roles" aria-label="Aman Singh is a Backend Developer, Cloud Engineer, DevOps Enthusiast and Red Devil">
+                    <p class="hero-roles" data-in style="--d:750ms" aria-label="Aman Singh is a Backend Developer, Cloud Engineer, DevOps Enthusiast and Red Devil">
                         <span class="roles-prefix" aria-hidden="true">&gt;</span>
                         <span id="typed-role" aria-hidden="true">Backend Developer</span><span class="caret" aria-hidden="true"></span>
                     </p>
 
-                    <p class="hero-subtitle">
+                    <p class="hero-subtitle" data-in style="--d:850ms">
                         BTech CSE (CCVT) student at UPES Dehradun (July 2022 – June 2026). Currently Software Developer Intern at Quarks & former IBM Cloud Project Intern. Specializing in AWS Architecture, Docker, Kubernetes, Node.js, and Java backend microservices. Off the clock? Red Devil for life.
                     </p>
 
                     <!-- Scoreboard Metrics -->
-                    <div class="hero-metrics">
+                    <div class="hero-metrics" data-in style="--d:1000ms">
                         <div class="metric-item">
                             <span class="metric-value"><span class="counter" data-target="8.46">0</span></span>
                             <span class="metric-label">BTech CGPA</span>
@@ -233,7 +277,7 @@
                     </div>
 
                     <!-- Hero Call-to-Actions -->
-                    <div class="hero-actions">
+                    <div class="hero-actions" data-in style="--d:1150ms">
                         <a href="#projects" class="btn btn-primary">
                             See The Starting XI <i class="fas fa-arrow-right"></i>
                         </a>
@@ -256,10 +300,19 @@
                 </div>
 
                 <!-- Player Card -->
-                <div class="hero-visual">
+                <div class="hero-visual" data-in data-visual style="--d:350ms">
                     <div class="profile-card-wrap">
+                        <svg class="orbit" viewBox="0 0 600 600" aria-hidden="true">
+                            <defs>
+                                <path id="orbit-path" d="M300,300 m-250,0 a250,250 0 1,1 500,0 a250,250 0 1,1 -500,0"/>
+                            </defs>
+                            <circle cx="300" cy="300" r="282" fill="none" stroke="rgba(251,225,34,0.28)" stroke-width="1.5" stroke-dasharray="2 10"/>
+                            <circle cx="300" cy="300" r="214" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                            <text><textPath href="#orbit-path" textLength="1556" lengthAdjust="spacing">GLORY GLORY MAN UNITED • THEATRE OF DREAMS • 20 LEAGUE TITLES • </textPath></text>
+                        </svg>
                         <div class="profile-card-bg"></div>
                         <div class="player-card">
+                            <span class="foil" aria-hidden="true"></span>
                             <div class="player-rating">
                                 <span class="rating-num">88</span>
                                 <span class="rating-pos">SWE</span>
@@ -281,19 +334,24 @@
                             </div>
                         </div>
 
-                        <div class="floating-pill pill-1">
+                        <div class="floating-pill pill-1" data-depth="22">
                             <i class="fab fa-aws"></i> AWS EC2, S3 & IAM
                         </div>
-                        <div class="floating-pill pill-2">
+                        <div class="floating-pill pill-2" data-depth="-18">
                             <i class="fab fa-docker"></i> Docker & K8s
                         </div>
-                        <div class="floating-pill pill-3">
+                        <div class="floating-pill pill-3" data-depth="26">
                             <i class="fab fa-node-js"></i> Node.js & Jenkins
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <a href="#about" class="scroll-cue" aria-label="Scroll to profile">
+            <span class="mouse"><i></i></span>
+            <span>Scroll to kick off</span>
+        </a>
     </section>
 
     <!-- Ticker -->

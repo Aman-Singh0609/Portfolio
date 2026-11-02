@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initTypedRoles();
     initMagnetic();
     initCardTilt();
+    initHeroPointer();
     initParallax();
     initTitleReveal();
     initResumeLinks();
@@ -29,13 +30,78 @@ document.addEventListener('DOMContentLoaded', () => {
     hidePreloader();
 });
 
+/* --- Hero entrance: starts when the tunnel doors begin to open --- */
+function markHeroReady() {
+    const root = document.documentElement;
+    if (root.classList.contains('hero-ready')) return;
+    root.classList.add('hero-ready');
+    document.dispatchEvent(new Event('hero-ready'));
+}
+
 /* --- Preloader: leave as soon as the page is ready (CSS timer is the fallback) --- */
 function hidePreloader() {
     const pre = document.getElementById('preloader');
-    if (!pre) return;
-    const finish = () => setTimeout(() => pre.classList.add('hide'), reduceMotion ? 0 : 1200);
+    if (!pre) {
+        markHeroReady();
+        return;
+    }
+    const finish = () => setTimeout(() => {
+        pre.classList.add('hide');
+        setTimeout(markHeroReady, reduceMotion ? 0 : 350);
+    }, reduceMotion ? 0 : 1200);
     if (document.readyState === 'complete') finish();
     else window.addEventListener('load', finish, { once: true });
+}
+
+/* --- Hero pointer effects: smoothed spotlight and layered parallax --- */
+function initHeroPointer() {
+    const hero = document.getElementById('home');
+    if (!hero || !finePointer || reduceMotion) return;
+
+    let targetX = 0, targetY = 0, curX = 0, curY = 0;
+    let spotTX = 0.5, spotTY = 0.3, spotX = 0.5, spotY = 0.3;
+    let frame = null;
+    let visible = true;
+
+    function step() {
+        curX += (targetX - curX) * 0.08;
+        curY += (targetY - curY) * 0.08;
+        spotX += (spotTX - spotX) * 0.1;
+        spotY += (spotTY - spotY) * 0.1;
+
+        hero.style.setProperty('--hx', curX.toFixed(3));
+        hero.style.setProperty('--hy', curY.toFixed(3));
+        hero.style.setProperty('--sx', (spotX * 100).toFixed(1) + '%');
+        hero.style.setProperty('--sy', (spotY * 100).toFixed(1) + '%');
+
+        const settled = Math.abs(targetX - curX) < 0.001 && Math.abs(targetY - curY) < 0.001
+            && Math.abs(spotTX - spotX) < 0.001 && Math.abs(spotTY - spotY) < 0.001;
+        frame = settled ? null : requestAnimationFrame(step);
+    }
+
+    function wake() {
+        if (!frame && visible) frame = requestAnimationFrame(step);
+    }
+
+    hero.addEventListener('mousemove', (e) => {
+        const r = hero.getBoundingClientRect();
+        spotTX = (e.clientX - r.left) / r.width;
+        spotTY = (e.clientY - r.top) / r.height;
+        targetX = spotTX * 2 - 1;
+        targetY = spotTY * 2 - 1;
+        wake();
+    });
+
+    hero.addEventListener('mouseleave', () => {
+        targetX = 0;
+        targetY = 0;
+        wake();
+    });
+
+    new IntersectionObserver(([entry]) => {
+        visible = entry.isIntersecting;
+        if (visible) wake();
+    }).observe(hero);
 }
 
 /* --- Typed role line in the hero --- */
