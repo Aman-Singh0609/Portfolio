@@ -21,10 +21,58 @@ document.addEventListener('DOMContentLoaded', () => {
     initGoalButton();
 });
 
+/* --- Shared helpers: motion preference, pointer type, accessible modals --- */
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+let lastFocusedBeforeModal = null;
+
+function openModal(el) {
+    lastFocusedBeforeModal = document.activeElement;
+    el.classList.add('active');
+    el.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    const focusTarget = el.querySelector('input, [data-autofocus], button, a[href]');
+    if (focusTarget) setTimeout(() => focusTarget.focus(), 60);
+}
+
+function closeModal(el) {
+    if (!el.classList.contains('active')) return;
+    el.classList.remove('active');
+    el.setAttribute('aria-hidden', 'true');
+    if (!document.querySelector('.modal-backdrop.active')) document.body.style.overflow = '';
+    if (lastFocusedBeforeModal && lastFocusedBeforeModal.focus) lastFocusedBeforeModal.focus();
+}
+
+// Keep Tab focus inside whichever modal is open, and close it with Escape
+document.addEventListener('keydown', (e) => {
+    const modal = document.querySelector('.modal-backdrop.active');
+    if (!modal) return;
+
+    if (e.key === 'Escape') {
+        closeModal(modal);
+        return;
+    }
+
+    if (e.key === 'Tab') {
+        const focusable = Array.from(modal.querySelectorAll('a[href], button, input, textarea, [tabindex]:not([tabindex="-1"])'))
+            .filter(el => el.offsetParent !== null);
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+        }
+    }
+});
+
 /* --- 1. Rising Embers / Flares Canvas (stadium-flare feel) --- */
 function initParticleCanvas() {
     const canvas = document.getElementById('particle-canvas');
-    if (!canvas) return;
+    if (!canvas || prefersReducedMotion) return;
     const ctx = canvas.getContext('2d');
 
     let width = canvas.width = window.innerWidth;
@@ -96,6 +144,10 @@ function initParticleCanvas() {
     }
 
     function animate() {
+        if (document.hidden) {
+            requestAnimationFrame(animate);
+            return;
+        }
         ctx.clearRect(0, 0, width, height);
         particles.forEach(p => {
             p.update();
@@ -111,7 +163,7 @@ function initParticleCanvas() {
 /* --- Goal Celebration Confetti (red / gold / white) --- */
 function launchConfetti() {
     const canvas = document.getElementById('confetti-canvas');
-    if (!canvas) return;
+    if (!canvas || prefersReducedMotion) return;
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -163,6 +215,7 @@ function initGoalButton() {
 
 function celebrateGoal() {
     launchConfetti();
+    if (window.Stadium) window.Stadium.horn();
     showToast('GOAAAL! Glory Glory Man United!', 'fa-futbol');
 }
 
@@ -170,7 +223,7 @@ function celebrateGoal() {
 function initCustomCursor() {
     const cursor = document.getElementById('custom-cursor');
     const follower = document.getElementById('custom-cursor-follower');
-    if (!cursor || !follower) return;
+    if (!cursor || !follower || !hasFinePointer) return;
 
     let mouseX = -100, mouseY = -100;
     let followerX = -100, followerY = -100;
@@ -249,9 +302,17 @@ function initScrollReveal() {
     const reveals = document.querySelectorAll('.reveal');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('active');
-            }
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+
+            // Stagger siblings so grids cascade in instead of popping together
+            const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+            const position = Math.max(0, siblings.indexOf(el));
+            if (!prefersReducedMotion) el.style.transitionDelay = Math.min(position, 5) * 90 + 'ms';
+
+            el.classList.add('active');
+            setTimeout(() => { el.style.transitionDelay = ''; }, 1400);
+            observer.unobserve(el);
         });
     }, { threshold: 0.12 });
 
@@ -357,16 +418,15 @@ function initCommandPalette() {
     if (!modalBackdrop) return;
 
     function openPalette() {
-        modalBackdrop.classList.add('active');
+        openModal(modalBackdrop);
         if (cmdInput) {
             cmdInput.value = '';
-            cmdInput.focus();
             filterCommands('');
         }
     }
 
     function closePalette() {
-        modalBackdrop.classList.remove('active');
+        closeModal(modalBackdrop);
     }
 
     cmdTriggers.forEach(btn => btn.addEventListener('click', openPalette));
@@ -379,9 +439,6 @@ function initCommandPalette() {
         if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
             e.preventDefault();
             modalBackdrop.classList.contains('active') ? closePalette() : openPalette();
-        }
-        if (e.key === 'Escape' && modalBackdrop.classList.contains('active')) {
-            closePalette();
         }
     });
 
@@ -464,6 +521,11 @@ function initCommandPalette() {
 const projectsData = [
     {
         id: 'file-compress-cloud',
+        pitch: { x: 50, y: 17, pos: 'ST', short: 'File Compression' },
+        problem: 'Storing and moving large files is slow and costly without an automated, scalable pipeline.',
+        solution: 'Containerized the compression service with Docker, ran it on AWS EC2 with S3 storage and IAM access control, and shipped changes through CI/CD.',
+        outcome: 'Up to 70% better storage efficiency and 99.9% uptime, backed by logging and performance monitoring.',
+        flow: [['fas fa-user', 'Client'], ['fab fa-docker', 'Docker on EC2'], ['fas fa-box-archive', 'S3 Storage'], ['fas fa-shield-halved', 'IAM + Logs'], ['fas fa-gears', 'CI/CD']],
         title: 'Cloud-Based File Compression Application',
         category: 'cloud-devops',
         categoryLabel: 'Cloud & System Infrastructure',
@@ -476,6 +538,11 @@ const projectsData = [
     },
     {
         id: 'bakery-k8s',
+        pitch: { x: 27, y: 41, pos: 'LM', short: 'Bakery on K8s' },
+        problem: 'A multi-service bakery app needs services that talk reliably, stay fast under load, and deploy consistently.',
+        solution: 'Docker Compose networking and volumes, RabbitMQ for async queues, Redis for caching, then Kubernetes with health checks and automated CI/CD.',
+        outcome: 'A fully containerized, orchestrated stack with async processing, caching and automated deployments.',
+        flow: [['fas fa-user', 'Client'], ['fas fa-server', 'Services'], ['fas fa-envelope-open-text', 'RabbitMQ'], ['fas fa-bolt', 'Redis'], ['fas fa-cubes', 'Kubernetes']],
         title: 'Bakery Management System – Containerized K8s Deployment',
         category: 'cloud-devops',
         categoryLabel: 'DevOps & Container Orchestration',
@@ -488,6 +555,11 @@ const projectsData = [
     },
     {
         id: 'smart-agri',
+        pitch: { x: 73, y: 41, pos: 'RM', short: 'Smart Agriculture' },
+        problem: 'Farmers need data-driven crop guidance and timely alerts when conditions change.',
+        solution: 'A Random Forest model for crop recommendations, an AWS RDS (MySQL) data pipeline, and SNS plus CloudWatch for automated alerts, with IAM, EC2 and S3 best practices.',
+        outcome: 'A working cloud platform delivering personalised crop recommendations and real-time alerts, built during the IBM internship.',
+        flow: [['fas fa-seedling', 'Farm Data'], ['fas fa-brain', 'RF Model'], ['fas fa-database', 'RDS MySQL'], ['fas fa-chart-line', 'CloudWatch'], ['fas fa-bell', 'SNS Alerts']],
         title: 'Cloud-Based Smart Agriculture Platform (IBM)',
         category: 'cloud-devops',
         categoryLabel: 'AWS Cloud Architecture & ML',
@@ -500,10 +572,15 @@ const projectsData = [
     },
     {
         id: 'search-engine',
+        pitch: { x: 27, y: 65, pos: 'LB', short: 'Search Engine' },
+        problem: 'Searching large text collections quickly takes more than scanning every document.',
+        solution: 'An inverted index with custom tokenization, stop-word filtering, TF-IDF ranking and hash-map lookups.',
+        outcome: 'Relevance-ranked results from an index designed for sub-millisecond document retrieval.',
+        flow: [['fas fa-file-lines', 'Documents'], ['fas fa-scissors', 'Tokenizer'], ['fas fa-list-ol', 'Inverted Index'], ['fas fa-ranking-star', 'TF-IDF Rank'], ['fas fa-magnifying-glass', 'Results']],
         title: 'High-Performance Search Engine Indexer',
         category: 'systems-cli',
         categoryLabel: 'Algorithms & Systems',
-        image: 'Images/Search-Engine.png',
+        image: 'Images/Search-Engine.webp',
         shortDesc: 'Inverted-index search engine designed for rapid document parsing, TF-IDF ranking, and low query latency.',
         fullDesc: 'Designed and built an inverted-index search engine from scratch. Implemented custom string tokenization, stop-word filtering, term frequency-inverse document frequency (TF-IDF) ranking, and hash-map based indexing for sub-millisecond document retrieval across large text corpora.',
         tech: ['Java', 'Data Structures', 'TF-IDF Algorithm', 'File I/O', 'Search Systems'],
@@ -512,6 +589,11 @@ const projectsData = [
     },
     {
         id: 'tcp-chat',
+        pitch: { x: 73, y: 65, pos: 'RB', short: 'TCP Chat Server' },
+        problem: 'Many clients need to chat at the same time without blocking each other.',
+        solution: 'Multi-threaded connection handling with synchronization locks, room broadcast protocols and dynamic buffer management.',
+        outcome: 'A concurrent chat server with room routing and low-latency message broadcast.',
+        flow: [['fas fa-users', 'Clients'], ['fas fa-plug', 'TCP Listener'], ['fas fa-code-branch', 'Thread per Client'], ['fas fa-tower-broadcast', 'Room Broadcast']],
         title: 'Multithreaded TCP Chat CLI Server',
         category: 'systems-cli',
         categoryLabel: 'Networking & Systems',
@@ -524,6 +606,11 @@ const projectsData = [
     },
     {
         id: 'pwd-checker',
+        pitch: { x: 50, y: 87, pos: 'GK', short: 'Password Analyzer' },
+        problem: 'Weak passwords are still the easiest way into an account.',
+        solution: 'Shannon entropy measurement, dictionary-attack checks and character-set diversity tests, scored in real time.',
+        outcome: 'Instant strength feedback that shows why a password is weak and how to improve it.',
+        flow: [['fas fa-key', 'Password'], ['fas fa-font', 'Charset Check'], ['fas fa-calculator', 'Entropy'], ['fas fa-book', 'Dictionary Check'], ['fas fa-gauge-high', 'Score']],
         title: 'Security Password Strength Analyzer',
         category: 'security-algo',
         categoryLabel: 'Security & Auth',
@@ -539,12 +626,18 @@ const projectsData = [
 function initProjectsSystem() {
     const filterBtns = document.querySelectorAll('.filter-btn');
     const projectsGrid = document.getElementById('projects-grid');
+    const pitchView = document.getElementById('pitch-view');
+    const pitchPlayers = document.getElementById('pitch-players');
+    const viewBtns = document.querySelectorAll('[data-projects-view]');
     const projectModal = document.getElementById('project-modal');
     const modalCloseBtn = document.getElementById('modal-close-btn');
 
     if (!projectsGrid) return;
 
-    renderProjects('all');
+    let currentCategory = 'all';
+
+    renderProjects();
+    renderPitch();
 
     const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
     if (allBtn) allBtn.textContent = `All Projects (${projectsData.length})`;
@@ -553,24 +646,42 @@ function initProjectsSystem() {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            const category = btn.getAttribute('data-filter');
-            renderProjects(category);
+            currentCategory = btn.getAttribute('data-filter');
+            renderProjects();
+            applyPitchFilter();
         });
     });
 
-    function renderProjects(category) {
-        projectsGrid.innerHTML = '';
-        const filtered = category === 'all' ? projectsData : projectsData.filter(p => p.category === category);
+    viewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const view = btn.getAttribute('data-projects-view');
+            viewBtns.forEach(b => {
+                const on = b === btn;
+                b.classList.toggle('active', on);
+                b.setAttribute('aria-pressed', String(on));
+            });
+            projectsGrid.hidden = view !== 'grid';
+            if (pitchView) pitchView.hidden = view !== 'pitch';
+        });
+    });
 
-        filtered.forEach((project, index) => {
-            const card = document.createElement('div');
+    function visibleProjects() {
+        return currentCategory === 'all' ? projectsData : projectsData.filter(p => p.category === currentCategory);
+    }
+
+    function renderProjects() {
+        projectsGrid.innerHTML = '';
+
+        visibleProjects().forEach((project) => {
+            const number = projectsData.indexOf(project) + 1;
+            const card = document.createElement('article');
             card.className = 'project-card reveal active';
             card.setAttribute('data-id', project.id);
 
             card.innerHTML = `
-                <span class="shirt-no">${index + 1}</span>
+                <span class="shirt-no" aria-hidden="true">${number}</span>
                 <div class="project-thumb">
-                    <img src="${project.image}" alt="${project.title}" loading="lazy">
+                    <img src="${project.image}" alt="${project.title}" width="640" height="320" loading="lazy" decoding="async">
                     <div class="project-overlay">
                         <span class="project-category">${project.categoryLabel}</span>
                     </div>
@@ -582,42 +693,91 @@ function initProjectsSystem() {
                         ${project.tech.map(t => `<span class="project-tech-pill">${t}</span>`).join('')}
                     </div>
                     <div class="project-footer">
-                        <span class="project-link-btn">Explore Case Study <i class="fas fa-arrow-right"></i></span>
-                        <a href="${project.github}" target="_blank" onclick="event.stopPropagation();" class="btn-icon" title="View Source Code">
+                        <button type="button" class="project-link-btn case-open" aria-label="Open case study: ${project.title}">Explore Case Study <i class="fas fa-arrow-right"></i></button>
+                        <a href="${project.github}" target="_blank" rel="noopener" class="btn-icon" title="View Source Code" aria-label="View source code for ${project.title} on GitHub">
                             <i class="fab fa-github"></i>
                         </a>
                     </div>
                 </div>
             `;
 
-            card.addEventListener('click', () => openProjectModal(project));
+            // Whole card is clickable for mouse users; the button is the keyboard path
+            card.addEventListener('click', (e) => {
+                if (e.target.closest('a')) return;
+                openProjectModal(project);
+            });
             projectsGrid.appendChild(card);
+        });
+    }
+
+    function renderPitch() {
+        if (!pitchPlayers) return;
+        pitchPlayers.innerHTML = '';
+
+        projectsData.forEach((project, i) => {
+            if (!project.pitch) return;
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'pitch-player';
+            btn.dataset.category = project.category;
+            btn.style.left = project.pitch.x + '%';
+            btn.style.top = project.pitch.y + '%';
+            btn.style.setProperty('--i', i);
+            btn.setAttribute('aria-label', `${project.title}, position ${project.pitch.pos}. Open case study.`);
+            btn.innerHTML = `
+                <span class="pp-shirt">${i + 1}</span>
+                <span class="pp-name">${project.pitch.short}</span>
+                <span class="pp-pos">${project.pitch.pos}</span>
+            `;
+            btn.addEventListener('click', () => openProjectModal(project));
+            pitchPlayers.appendChild(btn);
+        });
+    }
+
+    function applyPitchFilter() {
+        if (!pitchPlayers) return;
+        pitchPlayers.querySelectorAll('.pitch-player').forEach(btn => {
+            btn.classList.toggle('dim', currentCategory !== 'all' && btn.dataset.category !== currentCategory);
         });
     }
 
     function openProjectModal(project) {
         if (!projectModal) return;
-        document.getElementById('modal-project-img').src = project.image;
-        document.getElementById('modal-project-category').innerText = project.categoryLabel;
-        document.getElementById('modal-project-title').innerText = project.title;
-        document.getElementById('modal-project-desc').innerText = project.fullDesc;
-        
+        const img = document.getElementById('modal-project-img');
+        img.src = project.image;
+        img.alt = project.title;
+        document.getElementById('modal-project-category').textContent = project.categoryLabel;
+        document.getElementById('modal-project-title').textContent = project.title;
+        document.getElementById('modal-project-desc').textContent = project.fullDesc;
+        document.getElementById('case-problem').textContent = project.problem || '';
+        document.getElementById('case-solution').textContent = project.solution || '';
+        document.getElementById('case-outcome').textContent = project.outcome || '';
+
+        const flow = document.getElementById('case-flow');
+        const steps = project.flow || [];
+        flow.innerHTML = steps.map(([icon, label]) =>
+            `<div class="flow-node"><i class="${icon}" aria-hidden="true"></i><span>${label}</span></div>`
+        ).join('<span class="flow-arrow" aria-hidden="true"><i class="fas fa-arrow-right"></i></span>');
+        flow.setAttribute('aria-label', 'Architecture flow: ' + steps.map(s => s[1]).join(' to '));
+        flow.previousElementSibling.hidden = flow.hidden = !steps.length;
+
         const techContainer = document.getElementById('modal-project-tech');
-        techContainer.innerHTML = project.tech.map(t => `<span class="tag"><i class="fas fa-microchip"></i> ${t}</span>`).join('');
+        techContainer.innerHTML = project.tech.map(t => `<span class="tag"><i class="fas fa-microchip" aria-hidden="true"></i> ${t}</span>`).join('');
 
         document.getElementById('modal-project-github').href = project.github;
         document.getElementById('modal-project-demo').href = project.demo;
 
-        projectModal.classList.add('active');
+        openModal(projectModal);
+        projectModal.querySelector('.project-modal-content').scrollTop = 0;
     }
 
     if (modalCloseBtn) {
-        modalCloseBtn.addEventListener('click', () => projectModal.classList.remove('active'));
+        modalCloseBtn.addEventListener('click', () => closeModal(projectModal));
     }
 
     if (projectModal) {
         projectModal.addEventListener('click', (e) => {
-            if (e.target === projectModal) projectModal.classList.remove('active');
+            if (e.target === projectModal) closeModal(projectModal);
         });
     }
 }
@@ -715,15 +875,6 @@ function initContactForm() {
         });
     }
 
-    const contactForm = document.getElementById('contact-form');
-    if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            showToast('GOAAAL! Offer received. Aman will get back to you shortly.', 'fa-futbol');
-            launchConfetti();
-            contactForm.reset();
-        });
-    }
 }
 
 function copyToClipboard(text, successMessage) {
@@ -770,12 +921,18 @@ function initMobileNav() {
     function openDrawer() {
         drawer.classList.add('active');
         overlay.classList.add('active');
+        toggleBtn.setAttribute('aria-expanded', 'true');
     }
 
     function closeDrawer() {
         drawer.classList.remove('active');
         overlay.classList.remove('active');
+        toggleBtn.setAttribute('aria-expanded', 'false');
     }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('active')) closeDrawer();
+    });
 
     toggleBtn.addEventListener('click', openDrawer);
     overlay.addEventListener('click', closeDrawer);

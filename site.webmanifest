@@ -1,0 +1,11 @@
+{
+  "name": "Aman Singh | Software Developer & Cloud Engineer",
+  "short_name": "Aman Singh",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0a0506",
+  "theme_color": "#da291c",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

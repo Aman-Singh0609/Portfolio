@@ -8,12 +8,60 @@
     <meta name="keywords" content="Aman Singh, Software Developer, Cloud Engineer, DevOps Intern, Quarks, IBM Intern, UPES Dehradun, AWS, Docker, Kubernetes, Java, Node.js">
     <meta name="author" content="Aman Singh">
     <meta name="theme-color" content="#DA291C">
+    <meta name="color-scheme" content="dark light">
+    <script>try { if (localStorage.getItem('kit') === 'away') document.documentElement.setAttribute('data-kit', 'away'); } catch (e) {}</script>
+    <link rel="canonical" href="https://aman-singh0609.github.io/Portfolio/">
+
+    <!-- Icons & Manifest -->
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="manifest" href="site.webmanifest">
 
     <!-- OpenGraph / Social Media -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Aman Singh">
+    <meta property="og:url" content="https://aman-singh0609.github.io/Portfolio/">
     <meta property="og:title" content="Aman Singh | Software Developer & Cloud Engineer">
     <meta property="og:description" content="Software Developer Intern @ Quarks | BTech CSE-CCVT @ UPES Dehradun (CGPA 8.46). Building resilient cloud infrastructure & backend APIs.">
-    <meta property="og:image" content="Images/Profile.jpeg">
+    <meta property="og:image" content="https://aman-singh0609.github.io/Portfolio/Images/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Aman Singh, Software Developer & Cloud Engineer, shown as a Manchester United style player card">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Aman Singh | Software Developer & Cloud Engineer">
+    <meta name="twitter:description" content="Building resilient backend systems & cloud infrastructure. AWS, Docker, Kubernetes, Node.js, Java.">
+    <meta name="twitter:image" content="https://aman-singh0609.github.io/Portfolio/Images/og-image.jpg">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Aman Singh",
+      "url": "https://aman-singh0609.github.io/Portfolio/",
+      "image": "https://aman-singh0609.github.io/Portfolio/Images/Profile.jpeg",
+      "jobTitle": "Software Developer Intern",
+      "worksFor": { "@type": "Organization", "name": "Quarks" },
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "University of Petroleum and Energy Studies (UPES)" },
+      "email": "mailto:amansingh06092004@gmail.com",
+      "address": { "@type": "PostalAddress", "addressLocality": "Dehradun", "addressRegion": "Uttarakhand", "addressCountry": "IN" },
+      "knowsAbout": ["AWS", "Docker", "Kubernetes", "Node.js", "Java", "CI/CD", "REST APIs", "Cloud Computing"],
+      "sameAs": [
+        "https://github.com/Aman-Singh0609",
+        "https://www.linkedin.com/in/aman-singh-b30a72284",
+        "https://leetcode.com/u/AmiAllen/"
+      ]
+    }
+    </script>
+
+    <!-- Without JS: show all content instead of hidden reveal states -->
+    <noscript>
+        <style>
+            .reveal { opacity: 1 !important; transform: none !important; }
+            .skill-bar-fill { width: var(--w, 80%) !important; }
+            #preloader { display: none !important; }
+            .js-only { display: none !important; }
+        </style>
+    </noscript>
 
     <!-- Fonts & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -23,8 +71,11 @@
 
     <!-- Custom Design System Stylesheet -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/polish.css">
 </head>
 <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
     <!-- Tunnel Preloader -->
     <div id="preloader">
         <div class="preloader-inner">
@@ -84,13 +135,24 @@
             </div>
 
             <div class="nav-actions">
-                <button class="cmd-trigger cmd-trigger-btn" title="Open Command Palette (Ctrl + K)">
-                    <i class="fas fa-search"></i>
-                    <span>Search</span>
-                    <span class="cmd-kbd">⌘K</span>
+                <button class="icon-toggle" id="kit-toggle" type="button" aria-label="Switch kit: home or away" aria-pressed="false" title="Switch kit (home / away)">
+                    <i class="fas fa-shirt"></i>
+                </button>
+                <button class="icon-toggle" id="sound-toggle" type="button" aria-label="Toggle stadium sound" aria-pressed="false" title="Stadium sound (off)">
+                    <i class="fas fa-volume-xmark"></i>
                 </button>
 
-                <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Mobile Menu">
+                <a href="Aman_Singh_Resume.pdf" class="nav-cv resume-link" target="_blank" rel="noopener" download hidden>
+                    <i class="fas fa-file-arrow-down"></i> CV
+                </a>
+
+                <button class="cmd-trigger cmd-trigger-btn" type="button" title="Open Command Palette (Ctrl + K)" aria-label="Open command palette">
+                    <i class="fas fa-search"></i>
+                    <span>Search</span>
+                    <span class="cmd-kbd">Ctrl K</span>
+                </button>
+
+                <button class="mobile-menu-toggle" id="mobile-menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav-drawer">
                     <i class="fas fa-bars"></i>
                 </button>
             </div>
@@ -99,7 +161,7 @@
 
     <!-- Mobile Navigation Drawer -->
     <div class="mobile-drawer-overlay" id="mobile-drawer-overlay"></div>
-    <div class="mobile-nav-drawer" id="mobile-nav-drawer">
+    <div class="mobile-nav-drawer" id="mobile-nav-drawer" aria-label="Mobile navigation">
         <div>
             <div class="logo">
                 <div class="logo-badge">
@@ -127,6 +189,7 @@
         </div>
     </div>
 
+<main id="main">
     <!-- Hero Section -->
     <section id="home" class="hero">
         <div class="hero-glow-1"></div>
@@ -143,6 +206,11 @@
                     <h1 class="hero-title">
                         Building Resilient <span class="gradient-text">Backend Systems</span> & Cloud Infrastructure.
                     </h1>
+
+                    <p class="hero-roles" aria-label="Aman Singh is a Backend Developer, Cloud Engineer, DevOps Enthusiast and Red Devil">
+                        <span class="roles-prefix" aria-hidden="true">&gt;</span>
+                        <span id="typed-role" aria-hidden="true">Backend Developer</span><span class="caret" aria-hidden="true"></span>
+                    </p>
 
                     <p class="hero-subtitle">
                         BTech CSE (CCVT) student at UPES Dehradun (July 2022 – June 2026). Currently Software Developer Intern at Quarks & former IBM Cloud Project Intern. Specializing in AWS Architecture, Docker, Kubernetes, Node.js, and Java backend microservices. Off the clock? Red Devil for life.
@@ -172,13 +240,16 @@
                         <a href="#contact" class="btn btn-secondary">
                             Make An Offer <i class="fas fa-paper-plane"></i>
                         </a>
-                        <a href="https://github.com/Aman-Singh0609" target="_blank" class="btn-icon" title="GitHub Profile">
+                        <a href="Aman_Singh_Resume.pdf" class="btn btn-gold resume-link" target="_blank" rel="noopener" download hidden>
+                            Download CV <i class="fas fa-file-arrow-down"></i>
+                        </a>
+                        <a href="https://github.com/Aman-Singh0609" target="_blank" rel="noopener" class="btn-icon" title="GitHub Profile" aria-label="GitHub profile">
                             <i class="fab fa-github"></i>
                         </a>
-                        <a href="https://www.linkedin.com/in/aman-singh-b30a72284" target="_blank" class="btn-icon" title="LinkedIn Profile">
+                        <a href="https://www.linkedin.com/in/aman-singh-b30a72284" target="_blank" rel="noopener" class="btn-icon" title="LinkedIn Profile" aria-label="LinkedIn profile">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                        <a href="https://leetcode.com/u/AmiAllen/" target="_blank" class="btn-icon" title="LeetCode Profile">
+                        <a href="https://leetcode.com/u/AmiAllen/" target="_blank" rel="noopener" class="btn-icon" title="LeetCode Profile" aria-label="LeetCode profile">
                             <i class="fas fa-code"></i>
                         </a>
                     </div>
@@ -195,7 +266,7 @@
                                 <i class="fas fa-futbol rating-icon"></i>
                             </div>
                             <div class="player-photo">
-                                <img src="Images/Profile.jpeg" alt="Aman Singh Profile">
+                                <img src="Images/Profile.jpeg" alt="Portrait of Aman Singh" width="400" height="400" fetchpriority="high" decoding="async">
                             </div>
                             <div class="player-info">
                                 <div class="player-name">Aman Singh</div>
@@ -378,7 +449,29 @@
                 <p class="section-subtitle">Categorized technical expertise verified through industry internships and projects.</p>
             </div>
 
-            <div class="skills-grid">
+            <div class="view-toggle js-only" role="group" aria-label="Skills view">
+                <button type="button" class="view-btn active" data-skills-view="bars" aria-pressed="true"><i class="fas fa-chart-simple"></i> Form Guide</button>
+                <button type="button" class="view-btn" data-skills-view="table" aria-pressed="false"><i class="fas fa-table-list"></i> League Table</button>
+            </div>
+
+            <div class="league" id="skills-table" hidden>
+                <table class="league-table">
+                    <caption class="sr-only">Skills ranked by proficiency. Click a column heading to sort.</caption>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="col-pos">#</th>
+                            <th scope="col"><button type="button" data-sort="name">Skill</button></th>
+                            <th scope="col" class="col-domain"><button type="button" data-sort="domain">Domain</button></th>
+                            <th scope="col" class="col-rating"><button type="button" data-sort="rating" class="sorted">Rating</button></th>
+                            <th scope="col" class="col-meter"><span class="sr-only">Meter</span></th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <p class="league-legend"><span class="dot ucl"></span> Champions League places (top 4) <span class="dot"></span> Rest of the squad</p>
+            </div>
+
+            <div class="skills-grid" id="skills-bars">
                 <!-- Skill Category 1 -->
                 <div class="skill-category-card reveal">
                     <div class="category-header">
@@ -391,21 +484,21 @@
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> AWS (EC2, S3, IAM, VPC)</span>
                                 <span class="skill-item-val">90%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90" style="--w:90%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Docker & Kubernetes</span>
                                 <span class="skill-item-val">88%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88" style="--w:88%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> CI/CD (Actions & Jenkins)</span>
                                 <span class="skill-item-val">85%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="85"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="85" style="--w:85%"></div></div>
                         </div>
                     </div>
                 </div>
@@ -422,21 +515,21 @@
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Java & Collections</span>
                                 <span class="skill-item-val">90%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90" style="--w:90%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Data Structures & Algos</span>
                                 <span class="skill-item-val">88%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88" style="--w:88%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Python Scripting</span>
                                 <span class="skill-item-val">82%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="82"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="82" style="--w:82%"></div></div>
                         </div>
                     </div>
                 </div>
@@ -453,21 +546,21 @@
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> MySQL & SQL Schema</span>
                                 <span class="skill-item-val">90%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="90" style="--w:90%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> MongoDB & NoSQL</span>
                                 <span class="skill-item-val">82%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="82"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="82" style="--w:82%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Redis & RabbitMQ</span>
                                 <span class="skill-item-val">84%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="84"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="84" style="--w:84%"></div></div>
                         </div>
                     </div>
                 </div>
@@ -484,21 +577,21 @@
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Node.js & REST APIs</span>
                                 <span class="skill-item-val">88%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="88" style="--w:88%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Git, GitHub & Versioning</span>
                                 <span class="skill-item-val">92%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="92"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="92" style="--w:92%"></div></div>
                         </div>
                         <div class="skill-item">
                             <div class="skill-item-info">
                                 <span class="skill-item-name"><i class="fas fa-angle-right"></i> Linux CLI Commands</span>
                                 <span class="skill-item-val">86%</span>
                             </div>
-                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="86"></div></div>
+                            <div class="skill-bar-bg"><div class="skill-bar-fill" data-val="86" style="--w:86%"></div></div>
                         </div>
                     </div>
                 </div>
@@ -634,16 +727,43 @@
                 <p class="section-subtitle">Production cloud-native applications, containerized deployments, and backend services.</p>
             </div>
 
+            <!-- Live GitHub stats (filled by js/features.js; hidden if the API is unreachable) -->
+            <div class="gh-strip reveal" id="gh-strip" hidden>
+                <div class="gh-head"><i class="fab fa-github"></i> Live from GitHub <a href="https://github.com/Aman-Singh0609" target="_blank" rel="noopener">@Aman-Singh0609</a></div>
+                <div class="gh-stats">
+                    <div><b id="gh-repos">–</b><span>Public Repos</span></div>
+                    <div><b id="gh-stars">–</b><span>Stars Earned</span></div>
+                    <div><b id="gh-languages">–</b><span>Languages Used</span></div>
+                    <div><b id="gh-recent">–</b><span>Last Push</span></div>
+                </div>
+                <div class="gh-langs" id="gh-langs" aria-label="Most used languages"></div>
+            </div>
+
+            <div class="view-toggle js-only" role="group" aria-label="Projects view">
+                <button type="button" class="view-btn active" data-projects-view="grid" aria-pressed="true"><i class="fas fa-table-cells-large"></i> Squad List</button>
+                <button type="button" class="view-btn" data-projects-view="pitch" aria-pressed="false"><i class="fas fa-chess-board"></i> Formation</button>
+            </div>
+
             <!-- Project Category Filters -->
-            <div class="project-filters">
-                <button class="filter-btn active" data-filter="all">All Projects</button>
-                <button class="filter-btn" data-filter="cloud-devops">Cloud & DevOps</button>
-                <button class="filter-btn" data-filter="systems-cli">Systems & CLI</button>
-                <button class="filter-btn" data-filter="security-algo">Security & Algorithms</button>
+            <div class="project-filters" id="project-filters">
+                <button type="button" class="filter-btn active" data-filter="all">All Projects</button>
+                <button type="button" class="filter-btn" data-filter="cloud-devops">Cloud & DevOps</button>
+                <button type="button" class="filter-btn" data-filter="systems-cli">Systems & CLI</button>
+                <button type="button" class="filter-btn" data-filter="security-algo">Security & Algorithms</button>
             </div>
 
             <!-- Projects Grid (Populated dynamically via JS) -->
             <div class="projects-grid" id="projects-grid"></div>
+            <noscript><p class="noscript-note">Enable JavaScript to browse the project case studies, or visit <a href="https://github.com/Aman-Singh0609">my GitHub</a>.</p></noscript>
+
+            <!-- Formation view -->
+            <div class="pitch-wrap" id="pitch-view" hidden>
+                <div class="pitch">
+                    <div class="pitch-lines" aria-hidden="true"><i class="box top"></i><i class="box bottom"></i><i class="circle"></i><i class="half"></i></div>
+                    <div class="pitch-players" id="pitch-players"></div>
+                </div>
+                <p class="pitch-hint">Select a player to open the case study. Formation: 1-2-2-1.</p>
+            </div>
         </div>
     </section>
 
@@ -702,27 +822,34 @@
 
                 <!-- Interactive Quick Contact Form -->
                 <div class="contact-form reveal">
-                    <form id="contact-form">
+                    <form id="contact-form" novalidate>
                         <div class="form-group">
                             <label class="form-label" for="form-name">Your Name / Company</label>
-                            <input type="text" id="form-name" class="form-input" placeholder="e.g. Alex Mercer" required>
+                            <input type="text" id="form-name" name="name" class="form-input" placeholder="e.g. Alex Mercer" autocomplete="name" required minlength="2" maxlength="80">
+                            <span class="field-error" id="err-name" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="form-email">Email Address</label>
-                            <input type="email" id="form-email" class="form-input" placeholder="alex@company.com" required>
+                            <input type="email" id="form-email" name="email" class="form-input" placeholder="alex@company.com" autocomplete="email" required maxlength="120">
+                            <span class="field-error" id="err-email" role="alert"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="form-message">Message / Opportunity Details</label>
-                            <textarea id="form-message" class="form-input" placeholder="Hi Aman, we would love to discuss a Software Developer opportunity..." required></textarea>
+                            <textarea id="form-message" name="message" class="form-input" placeholder="Hi Aman, we would love to discuss a Software Developer opportunity..." required minlength="10" maxlength="2000"></textarea>
+                            <span class="field-error" id="err-message" role="alert"></span>
                         </div>
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">
-                            Send The Offer <i class="fas fa-paper-plane"></i>
+                        <!-- Honeypot: real visitors never see or fill this -->
+                        <div class="hp" aria-hidden="true"><label>Leave empty<input type="text" name="_honey" tabindex="-1" autocomplete="off"></label></div>
+                        <button type="submit" class="btn btn-primary" id="form-submit" style="width: 100%;">
+                            <span class="btn-label">Send The Offer</span> <i class="fas fa-paper-plane"></i>
                         </button>
+                        <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
                     </form>
                 </div>
             </div>
         </div>
     </section>
+</main>
 
     <!-- Footer -->
     <footer>
@@ -732,20 +859,20 @@
                 <div class="footer-chant">Glory Glory Man United <i class="fas fa-futbol"></i></div>
             </div>
             <div style="display: flex; gap: 16px; align-items: center;">
-                <a href="https://github.com/Aman-Singh0609" target="_blank" class="btn-icon"><i class="fab fa-github"></i></a>
-                <a href="https://www.linkedin.com/in/aman-singh-b30a72284" target="_blank" class="btn-icon"><i class="fab fa-linkedin-in"></i></a>
-                <a href="https://leetcode.com/u/AmiAllen/" target="_blank" class="btn-icon"><i class="fas fa-code"></i></a>
-                <a href="#home" class="back-to-top" title="Back to Top"><i class="fas fa-arrow-up"></i></a>
+                <a href="https://github.com/Aman-Singh0609" target="_blank" rel="noopener" class="btn-icon" aria-label="GitHub profile"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/aman-singh-b30a72284" target="_blank" rel="noopener" class="btn-icon" aria-label="LinkedIn profile"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://leetcode.com/u/AmiAllen/" target="_blank" rel="noopener" class="btn-icon" aria-label="LeetCode profile"><i class="fas fa-code"></i></a>
+                <a href="#home" class="back-to-top" title="Back to Top" aria-label="Back to top"><i class="fas fa-arrow-up"></i></a>
             </div>
         </div>
     </footer>
 
     <!-- Command Palette Modal -->
-    <div class="modal-backdrop" id="command-palette">
-        <div class="command-modal">
+    <div class="modal-backdrop" id="command-palette" aria-hidden="true">
+        <div class="command-modal" role="dialog" aria-modal="true" aria-label="Command palette">
             <div class="command-search-bar">
-                <i class="fas fa-terminal"></i>
-                <input type="text" id="cmd-input" class="command-search-input" placeholder="Type a command or search section..." autocomplete="off">
+                <i class="fas fa-terminal" aria-hidden="true"></i>
+                <input type="text" id="cmd-input" class="command-search-input" placeholder="Type a command or search section..." autocomplete="off" aria-label="Search commands">
                 <span class="command-badge">ESC to close</span>
             </div>
             <div class="command-list" id="cmd-list">
@@ -813,25 +940,34 @@
     </div>
 
     <!-- Project Lightbox Detail Modal -->
-    <div class="modal-backdrop" id="project-modal">
-        <div class="project-modal-card">
+    <div class="modal-backdrop" id="project-modal" aria-hidden="true">
+        <div class="project-modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-project-title">
             <div class="project-modal-header">
-                <img id="modal-project-img" src="" alt="Project Header">
-                <button class="project-modal-close" id="modal-close-btn"><i class="fas fa-times"></i></button>
+                <img id="modal-project-img" src="" alt="" width="800" height="300">
+                <button class="project-modal-close" id="modal-close-btn" type="button" aria-label="Close case study"><i class="fas fa-times"></i></button>
             </div>
             <div class="project-modal-content">
                 <span class="project-category" id="modal-project-category">Category</span>
-                <h2 style="font-family: var(--font-heading); font-size: 2.4rem; letter-spacing: 1px; font-weight: 400; margin: 8px 0 16px 0;" id="modal-project-title">Title</h2>
-                <p style="color: var(--text-muted); font-size: 1.05rem; line-height: 1.7; margin-bottom: 24px;" id="modal-project-desc">Description</p>
+                <h2 class="modal-title" id="modal-project-title">Title</h2>
+                <p class="modal-desc" id="modal-project-desc">Description</p>
 
-                <h4 style="font-size: 1rem; color: var(--text-main); margin-bottom: 12px;">Architecture Tech Stack:</h4>
+                <div class="case-grid">
+                    <div class="case-box"><h4><i class="fas fa-bullseye"></i> The Brief</h4><p id="case-problem"></p></div>
+                    <div class="case-box"><h4><i class="fas fa-chess-knight"></i> The Tactics</h4><p id="case-solution"></p></div>
+                    <div class="case-box"><h4><i class="fas fa-trophy"></i> The Result</h4><p id="case-outcome"></p></div>
+                </div>
+
+                <h4 class="modal-sub">Architecture Flow</h4>
+                <div class="flow" id="case-flow" role="img" aria-label="Architecture flow diagram"></div>
+
+                <h4 class="modal-sub">Tech Stack</h4>
                 <div class="tags-wrapper" id="modal-project-tech" style="margin-bottom: 30px;"></div>
 
                 <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-                    <a href="" target="_blank" id="modal-project-github" class="btn btn-primary">
+                    <a href="" target="_blank" rel="noopener" id="modal-project-github" class="btn btn-primary">
                         <i class="fab fa-github"></i> View GitHub Source
                     </a>
-                    <a href="" target="_blank" id="modal-project-demo" class="btn btn-secondary">
+                    <a href="" target="_blank" rel="noopener" id="modal-project-demo" class="btn btn-secondary">
                         <i class="fas fa-external-link-alt"></i> Case Study Repo
                     </a>
                 </div>
@@ -840,6 +976,7 @@
     </div>
 
     <!-- Master Logic JS -->
-    <script src="js/main.js"></script>
+    <script src="js/main.js" defer></script>
+    <script src="js/features.js" defer></script>
 </body>
 </html>

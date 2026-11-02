@@ -11,6 +11,7 @@
     --bg-card: rgba(26, 11, 12, 0.72);
     --bg-card-hover: rgba(40, 14, 15, 0.85);
     --bg-input: rgba(20, 8, 9, 0.85);
+    --surface-solid: #130809;
 
     /* Club Colours */
     --red: #da291c;
@@ -76,8 +77,14 @@ body {
 
 body.loading { overflow: hidden; }
 
-a, button, input, textarea, select, .interactive, [data-action], .project-card, .bento-card, .filter-btn, .tag, .command-item, .social-link {
-    cursor: none !important;
+#custom-cursor, #custom-cursor-follower { display: none; }
+
+@media (hover: hover) and (pointer: fine) {
+    a, button, input, textarea, select, .interactive, [data-action], .project-card, .bento-card, .filter-btn, .tag, .command-item, .social-link {
+        cursor: none !important;
+    }
+    #custom-cursor { display: block; }
+    #custom-cursor-follower { display: flex; }
 }
 
 h1, h2, h3, .section-title, .hero-title, .logo, .metric-value, .fan-num, .player-name, .rating-num {
@@ -906,7 +913,7 @@ nav.scrolled {
     backdrop-filter: blur(12px);
     border: 1px solid var(--gold);
     border-radius: 100px;
-    color: var(--text-main);
+    color: #fff7f5;
     font-family: var(--font-code);
     font-size: 0.8rem;
     font-weight: 500;
@@ -1619,7 +1626,7 @@ textarea.form-input { min-height: 140px; resize: vertical; }
 .command-modal {
     width: 100%;
     max-width: 640px;
-    background: #130809;
+    background: var(--surface-solid);
     border: 1px solid var(--glass-border-hover);
     border-top: 4px solid var(--red);
     border-radius: var(--radius-lg);
@@ -1693,7 +1700,7 @@ textarea.form-input { min-height: 140px; resize: vertical; }
 .project-modal-card {
     width: 100%;
     max-width: 800px;
-    background: #130809;
+    background: var(--surface-solid);
     border: 1px solid var(--glass-border-hover);
     border-top: 4px solid var(--red);
     border-radius: var(--radius-lg);
@@ -1744,7 +1751,7 @@ textarea.form-input { min-height: 140px; resize: vertical; }
     border: 1px solid var(--red-bright);
     border-left: 5px solid var(--gold);
     border-radius: var(--radius-md);
-    color: var(--text-main);
+    color: #fff7f5;
     font-size: 0.95rem;
     font-weight: 600;
     display: flex;

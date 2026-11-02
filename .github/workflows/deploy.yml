@@ -23,10 +23,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Check JavaScript syntax
+        run: |
+          for f in js/*.js; do node --check "$f"; done
+
+      - name: Check that referenced local files exist
+        run: |
+          python3 - <<'EOF'
+          import re, os, sys
+          html = open('index.html', encoding='utf-8').read()
+          js = open('js/main.js', encoding='utf-8').read()
+          refs = set(re.findall(r'(?:src|href)="((?!https?:|#|mailto:|data:)[^"]+)"', html))
+          refs |= set(re.findall(r"image: '([^']+)'", js))
+          optional = {'Aman_Singh_Resume.pdf'}
+          missing = [r for r in sorted(refs) if r not in optional and not os.path.exists(r)]
+          print('Checked', len(refs), 'references')
+          if missing:
+              print('Missing files:', missing)
+              sys.exit(1)
+          EOF
+
       - name: Stage site files
         run: |
           mkdir _site
-          cp -r index.html css js Images _site/
+          cp -r index.html 404.html favicon.svg robots.txt sitemap.xml site.webmanifest css js Images _site/
+          if [ -f Aman_Singh_Resume.pdf ]; then
+            cp Aman_Singh_Resume.pdf _site/
+            sed -i 's/<html lang="en">/<html lang="en" data-resume="true">/' _site/index.html
+            echo "Resume PDF found: CV buttons enabled"
+          else
+            echo "No Aman_Singh_Resume.pdf in the repo: CV buttons stay hidden"
+          fi
 
       - uses: actions/configure-pages@v5
 
